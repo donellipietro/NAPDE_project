@@ -1,0 +1,190 @@
+# Listing of Parameters
+
+subsection Boundary Conditions
+  # Set the Column Name where is stored the BCs in the .csv file (associated to a column time)
+  set File Column Name Skull BCs = c_skull
+
+  # Set the Column Name where is stored the BCs in the .csv file (associated to a column time)
+  set File Column Name Ventricles BCs = c_vent
+
+  # Type of Input for the imposition of Boundary Condition imposed on the Skull Surface: Constant/File/Expression
+  set Input for Skull BCs = Constant
+
+  # Type of Input for the imposition of Boundary Condition on the Ventricular Surface: Constant/File/Expression
+  set Input for Ventricles BCs = Constant
+
+  # Type of Boundary Condition imposed on the Skull Surface: Dirichlet/Neumann
+  set Skull BCs = Neumann
+
+  # Boundary Condition value to be imposed [-]
+  set Skull Dirichlet BCs Value = 0
+
+  # Boundary Condition value to be imposed [1/m]
+  set Skull Neumann BCs Value = 0
+
+  # Type of Boundary Condition imposed on the Ventricular Surface: Dirichlet/Neumann/Neumann with CSF Pressure
+  set Ventricles BCs = Neumann
+
+  # Boundary Condition value to be imposed [-]
+  set Ventricles Dirichlet BCs Value = 0
+
+  # Boundary Condition value to be imposed [1/m]
+  set Ventricles Neumann BCs Value = 0
+
+end
+
+subsection Domain Definition
+  # Set the name of the function containing the boundary ID
+  set Boundary ID Function Name = boundaries
+
+  # Set the value of boundary ID of skull
+  set ID for Skull = 1
+
+  # Set the value of boundary ID of ventricles
+  set ID for Ventricles = 2
+
+  # Set the name of the function containing the subdomain ID
+  set Subdomain ID Function Name = subdomains
+
+  # Decide the type of mesh to use in your simulation: File/Built-in
+  set Type of Mesh = File
+
+
+  subsection Built-in Mesh
+    # Decide the type of geometrical built-in object: Cube/Sphere/Square
+    set Geometry Type = Cube
+
+    # Refinement value of the mesh
+    set Mesh Refinement = 20
+
+
+    subsection Cubic Mesh
+      # Length of the external cube edge [m]
+      set External Edge Length = 0.1
+
+      # Length of the internal cube edge [m]
+      set Internal Edge Length = 0.01
+
+    end
+
+    subsection Spherical Mesh
+      # Length of the external sphere radius [m]
+      set External Radius = 0.1
+
+      # Length of the internal sphere radius [m]
+      set Internal Radius = 0.01
+
+    end
+  end
+
+  subsection Mesh from File
+    # Name of the file containing the mesh. Possible extensions: .h5
+    set File Name = ../../mesh/mesh.h5
+
+  end
+end
+
+subsection Linear Solver
+  # Choice of iterative solver type. The available options are: 
+  #   gmres - cg - minres - tfqmr - richardson - bicgstab - nash - stcg
+  set Iterative Solver = gmres
+
+  # Choice of preconditioner type. The available options are: 
+  #   ilu - icc - jacobi - bjacobi - sor - additive_schwarz - petsc_amg - hypre_amg - 
+  #   hypre_euclid - hypre_parasails - amg - ml_amg - none
+  set Preconditioner = sor
+
+  # Choice of linear solver type: Default/Iterative Solver/MUMPS
+  set Type of Solver = MUMPS
+
+  # Choice of using the user defined block preconditioner: Yes/No
+  set User-Defined Preconditioner = No
+
+end
+
+subsection Model Parameters
+  # Axonal diffusion constant [m^2/years]
+  set Axonal diffusion = 8e-5
+
+  # Name of the file containing the tensor
+  set Axonal Diffusion Tensor File Name = ../../mesh/axonal_diffusion.h5
+
+  # Extracellular diffusion constant [m^2/years]
+  set Extracellular diffusion = 8e-6
+
+  # Forcing Term [1/s]
+  set Forcing Term = 0*x[0]
+
+  # Initial condition of a concentration value
+  set Initial Condition = 9250.57
+
+  # Name of the file containing the initial condition# Initial condition of a concentration value
+  set Initial Condition File Name = ../../mesh/PET.h5
+
+  # Enable the reading of an initial condition from file# Initial condition of a concentration value
+  set Initial Condition from File = Yes
+
+  # Isotropic Diffusion Tensors assumption: Yes/No
+  set Isotropic Diffusion = Yes
+
+  # Name of the field in which the axonal diffusion tensor is stored
+  set Name of Axonal Diffusion Tensor in File = axonal_diffusion
+
+  # Name of the function containing the initial condition in the file
+  set Name of IC Function in File = PET
+
+  # Reaction Coefficient of the Proteins [1/years]
+  set Reaction Coefficient = 0.9
+
+end
+
+subsection Output
+  # Output file name (The relative/absolute path must be indicated!)
+  set Output XDMF File Name = /scratch/hpc/donelli/SolutionFKlong
+
+  # Temporal distance between saving two files
+  set Timestep of File Save = 4
+
+end
+
+subsection Scaling Parameters
+  # Set the characteristic length scale of the problem [m]
+  set Characteristic Length = 1
+
+  # Set the characteristic time scale of the problem [s]
+  set Characteristic Time = 1
+
+end
+
+subsection Spatial Discretization
+  # Decide the type of problem formulation (Classical/Exponential)
+  set Formulation = Classical
+
+  # Decide the type of spatial discretization method to apply (DG-FEM/CG-FEM)
+  set Method = DG-FEM
+
+  # Decide the polynomial degree of the FEM approximation
+  set Polynomial Degree = 1
+
+
+  subsection Discontinuous Galerkin
+    # Choice of the value of the penalty parameter for the DG discretization
+    set Penalty Parameter = 10
+
+  end
+end
+
+subsection Temporal Discretization
+  # Final time of the simulation [s]
+  set Final Time = 10
+
+  # Periodicity of the BCs [s]
+  set Problem Periodicity = 1
+
+  # Choice of the value of the parameter theta: IE(1) - CN(0.5) - EE(0)
+  set Theta-Method Parameter = 0.5
+
+  # Time step of the problem [s]
+  set Time Step = 0.025
+
+end
