@@ -1,0 +1,15 @@
+version: '3'
+
+volumes:
+  shared:
+
+services:
+  all:
+    build: meshing/
+    volumes:
+      - shared:/project
+      - ./results:/results
+    ports: 
+      - 5001:80
+    stdin_open: true
+    tty: true
